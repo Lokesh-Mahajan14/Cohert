@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ws://localhost:3000 http://localhost:3000;">
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="user-list">
+        <h3>Online Usere</h3>
+        <ul id="users"></ul>
+    </div>
+    <div id="chat"></div>
+    <form action="" id="message-form">
+        <input type="text" id="message-input" placeholder="Enter your message" required />
+        <button type="submit">Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+  <script src="/client.js"></script>
+</body>
+</html>

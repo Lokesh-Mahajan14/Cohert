@@ -5,9 +5,11 @@ function AddNewTask({
   showDialog,
   setShowDialog,
   currentEditedId,
+  setCurrentEditedId,
   taskFormData,
   handleSubmit,
-  setCurrentEditedId,
+  
+  
 }) {
   return (
     <CommonDialog
@@ -22,6 +24,7 @@ function AddNewTask({
       btnText={"Add"}
       handleSubmit={handleSubmit}
       formData={taskFormData}
+      setCurrentEditedId={setCurrentEditedId}
     />
   );
 }

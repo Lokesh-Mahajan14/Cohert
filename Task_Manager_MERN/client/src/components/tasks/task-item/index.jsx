@@ -3,7 +3,7 @@ import CommonCard from "@/components/common-card";
 
 
 
-function TaskItem({item,handleDelete,setShowDialog
+function TaskItem({item,handleDelete,setShowDialog,setCurrentEditedId,taskFormData
 }){
 
     return(
@@ -12,7 +12,14 @@ function TaskItem({item,handleDelete,setShowDialog
         description={item?.status}
         footerContent={
             <div className="flex w-full justify-between items-center">
-                <CommonButton onClick={()=>setShowDialog(true)} buttonText={'Edit'}/>
+                <CommonButton onClick={()=>{setShowDialog(true); setCurrentEditedId(item?._id);
+                    taskFormData.setValue('title',item?.title);
+                    taskFormData.setValue('descripttion',item?.descripttion);
+                    taskFormData.setValue('status',item?.status);
+                    taskFormData.setValue('priority',item?.priority);
+
+
+                }} buttonText={'Edit'} />
                 <CommonButton onClick={()=>handleDelete(item?._id)} buttonText={'Delete'}/>
 
             </div>

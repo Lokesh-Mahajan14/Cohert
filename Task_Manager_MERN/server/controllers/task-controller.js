@@ -2,10 +2,10 @@
 const Task=require("../models/task");
 
 const addNewTask=async(req,res)=>{
-    const {title,description,status,userId,priority}=await req.body;
+    const {title,descripttion,status,userId,priority}=await req.body;
     try{
         const task=Task.create({
-            title,description,status,userId,priority
+            title,descripttion,status,userId,priority
         })
         if(task){
             return res.status(201).json({
@@ -58,14 +58,15 @@ const getAllTasks=async(req,res)=>{
 }
 
 const updateTask=async(req,res)=>{
+            const {title,descripttion,status,userId,priority,_id}=await req.body;
+
     try{
-        const {title,description,status,userId,priority,_id}=req.body;
         const updateTask=await Task.findByIdAndUpdate(
             {
                 _id,
             },{
                 title,
-                description,
+                descripttion,
                 status,
                 priority,
                 userId,

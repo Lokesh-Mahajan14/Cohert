@@ -3,7 +3,7 @@ import AddNewTasks from "@/components/tasks/add-new-tasks";
 import TaskItem from "@/components/tasks/task-item";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TaskManagerContext } from "@/context";
-import { addNewTaskApi, deleteTaskApi, getAllTasksApi } from "@/services";
+import { addNewTaskApi, deleteTaskApi, getAllTasksApi, updateTaskApi } from "@/services";
 import { Fragment, useContext, useEffect, useState } from "react";
 
 function TasksPage() {
@@ -15,10 +15,16 @@ function TasksPage() {
     loading,
     user,
     taskFormData,
+    setCurrentEditedId,
+    currentEditedId,
   } = useContext(TaskManagerContext);
 
   async function handleSubmit(getData) {
-    const response = await addNewTaskApi({
+    const response =currentEditedId!==null? await updateTaskApi({
+      ...getData,
+      _id:currentEditedId,
+      userId:user?._id,
+    }): await addNewTaskApi({
       ...getData,
       userId: user?._id,
     });
@@ -28,6 +34,7 @@ function TasksPage() {
       await fetchListOfTasks();
       setShowDialog(false);
       taskFormData.reset();
+      setCurrentEditedId(null);
     }
   }
 
@@ -74,7 +81,7 @@ function TasksPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {tasksList?.length > 0 ? (
             tasksList.map((taskItem) => (
-              <TaskItem setShowDialog={setShowDialog} handleDelete={handleDelete} key={taskItem._id} item={taskItem} />  
+              <TaskItem setShowDialog={setShowDialog} handleDelete={handleDelete} key={taskItem._id} item={taskItem} setCurrentEditedId={setCurrentEditedId} taskFormData={taskFormData} />  
             ))
           ) : (
             <h1>No tasks added! Please add one</h1>
@@ -87,6 +94,7 @@ function TasksPage() {
         handleSubmit={handleSubmit}
         setShowDialog={setShowDialog}
         taskFormData={taskFormData}
+        currentEditedId={currentEditedId}
       />
     </Fragment>
   );

@@ -28,13 +28,13 @@ function CommonForm({ formControls = [], handleSubmit, form, btnText }) {
                             placeholder={controlItem.placeholder}
                             type={controlItem.type}
                             {...field}
-                            value={field.value}
+                            value={field.value ?? " "}
                             className="w-full rounded h-[50px] border-none text-black bg-gray-200 text-[16px] outline-none drop-shadow-sm transition-all duration-300 ease-in-out focus:bg-gray-100 focus:drop-shadow-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           />
                         </FormControl>
                       ) : controlItem.componentType === "select" ? (
                         <Select
-                          value={field.value}
+                          value={field.value ?? " "}
                           onValueChange={field.onChange}
                         >
                           <FormControl>

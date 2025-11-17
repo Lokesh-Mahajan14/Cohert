@@ -11,6 +11,7 @@ function TaskManagerProvider({children}){
     const[user,setUser]=useState(null);
     const[loading,setLoading]=useState(false);
     const[tasksList,setTaskList]=useState([]);
+    const[currentEditedId,setCurrentEditedId]=useState(null);
     const taskFormData=useForm({
         defaultValues:{
         title:'',
@@ -38,7 +39,7 @@ function TaskManagerProvider({children}){
 
 
 
-    return <TaskManagerContext.Provider value={{tasksList,setTaskList,setLoading,loading,user,setUser,taskFormData} }>{children}</TaskManagerContext.Provider>
+    return <TaskManagerContext.Provider value={{tasksList,setTaskList,setLoading,loading,user,setUser,taskFormData,currentEditedId,setCurrentEditedId} }>{children}</TaskManagerContext.Provider>
 }
 
 export default TaskManagerProvider;
