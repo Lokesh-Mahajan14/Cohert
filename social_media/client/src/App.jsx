@@ -20,7 +20,7 @@ function App() {
         <Routes>
         <Route path='/' element={!user ? <Login/>:<Layout/>}>
           <Route index element={<Feed/>}/>
-          <Route path='message' element={<Message/>}/>
+          <Route path='messages' element={<Message/>}/>
           <Route path='message/:userId' element={<ChatBox/>}/>
           <Route path='connections' element={<Connection/>}/>
           <Route path='discover' element={<Discover/>}/>
