@@ -16,30 +16,45 @@ function CommonCard({
   headerRightContent,
 }) {
   return (
-    <Card className="flex bg-gray-100 flex-col gap-6 rounded-2xl p-8 transition duration-300 hover:bg-white hover:shadow-2xl hover:shadow-gray-600/10 cursor-pointer">
+    <Card
+      className="flex flex-col gap-6 rounded-2xl p-8 bg-gray-100 
+      transition duration-300 hover:bg-white hover:shadow-2xl 
+      hover:shadow-gray-600/10 cursor-pointer w-full max-w-[280px]"
+    >
+      {/* HEADER */}
       <CardHeader className="p-0">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-start gap-3">
           {title ? (
             <CardTitle
-              className={`text-2xl max-w-[250px] text-ellipsis overflow-hidden whitespace-nowrap font-semibold text-gray-950 ${
+              title={title}
+              className={`text-lg font-semibold text-gray-950 
+              break-words line-clamp-2 ${
                 extraTextStyles ? extraTextStyles : ""
               }`}
             >
               {title}
             </CardTitle>
           ) : null}
+
           {headerRightContent ? headerRightContent : null}
         </div>
-        <div className="flex justify-start">
-          {description ? (
-            <CardDescription className="mt-3 text-gray-600">
-              {description}
-            </CardDescription>
-          ) : null}
-        </div>
+
+        {description ? (
+          <CardDescription className="mt-2 text-gray-600 capitalize">
+            {description}
+          </CardDescription>
+        ) : null}
       </CardHeader>
-      {content ? <CardContent className="p-0">{content}</CardContent> : null}
-      <CardFooter className="p-0">{footerContent}</CardFooter>
+
+      {/* CONTENT */}
+      {content ? (
+        <CardContent className="p-0">{content}</CardContent>
+      ) : null}
+
+      {/* FOOTER */}
+      {footerContent ? (
+        <CardFooter className="p-0">{footerContent}</CardFooter>
+      ) : null}
     </Card>
   );
 }
