@@ -22,33 +22,46 @@ const syncUserCreation = inngest.createFunction(
       first_name,
       last_name,
       email_addresses,
+      external_accounts,
       image_url,
     } = event.data;
 
-    // Safety check
-    if (!email_addresses || email_addresses.length === 0) {
-      throw new Error("No email addresses found in clerk/user.created event");
+    // ---------------- GET EMAIL SAFELY ----------------
+    let email = null;
+
+    if (email_addresses && email_addresses.length > 0) {
+      email = email_addresses[0].email_address;
+    } else if (external_accounts && external_accounts.length > 0) {
+      email = external_accounts[0].email_address || null;
     }
 
-    let username = email_addresses[0].email_address.split("@")[0];
+    // ❗ If still no email, skip creation (user.updated will fix it)
+    if (!email) {
+      console.log(
+        `Skipping user creation for ${id} — email not available yet`
+      );
+      return;
+    }
 
-    // Check for duplicate username
+    // ---------------- USERNAME ----------------
+    let username = email.split("@")[0];
+
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       username = `${username}${Math.floor(Math.random() * 10000)}`;
     }
 
-    const userData = {
+    // ---------------- SAVE USER ----------------
+    await User.create({
       _id: id,
-      email: email_addresses[0].email_address,
+      email,
       full_name: `${first_name || ""} ${last_name || ""}`.trim(),
       profile_picture: image_url || "",
       username,
-    };
-
-    await User.create(userData);
+    });
   }
 );
+
 
 // --------------------------------------------------
 // FUNCTION: USER UPDATED
@@ -63,23 +76,32 @@ const syncUserUpdation = inngest.createFunction(
       first_name,
       last_name,
       email_addresses,
+      external_accounts,
       image_url,
     } = event.data;
 
-    // Safety check
-    if (!email_addresses || email_addresses.length === 0) {
-      throw new Error("No email addresses found in clerk/user.updated event");
+    let email = null;
+
+    if (email_addresses && email_addresses.length > 0) {
+      email = email_addresses[0].email_address;
+    } else if (external_accounts && external_accounts.length > 0) {
+      email = external_accounts[0].email_address || null;
     }
 
-    const updatedUserData = {
-      email: email_addresses[0].email_address,
-      full_name: `${first_name || ""} ${last_name || ""}`.trim(),
-      profile_picture: image_url || "",
-    };
+    if (!email) return;
 
-    await User.findByIdAndUpdate(id, updatedUserData);
+    await User.findByIdAndUpdate(
+      id,
+      {
+        email,
+        full_name: `${first_name || ""} ${last_name || ""}`.trim(),
+        profile_picture: image_url || "",
+      },
+      { upsert: true } // 🔥 THIS IS KEY
+    );
   }
 );
+
 
 // --------------------------------------------------
 // FUNCTION: USER DELETED
