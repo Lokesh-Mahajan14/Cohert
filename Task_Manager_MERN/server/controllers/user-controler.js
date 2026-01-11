@@ -40,7 +40,7 @@ const registerUser = async (req, res) => {
 
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: false, // ❗ consider true for production
+      httpOnly: false, 
     });
 
     return res.status(201).json({
